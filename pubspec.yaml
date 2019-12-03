@@ -26,7 +26,6 @@ dependencies:
 
   intl: ^0.16.0
   # 2-1. 메인화면 - (Http 라이브러리 임포트)
-  http: ^0.12.0+2
 
 dev_dependencies:
   flutter_test:
