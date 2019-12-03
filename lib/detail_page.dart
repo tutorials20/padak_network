@@ -10,7 +10,6 @@ import 'model/response/movie_response.dart';
 import 'model/widget/star_rating_bar.dart';
 
 // 3-1. 상세화면 - 라이브러리 임포트
-import 'package:http/http.dart' as http;
 
 class DetailPage extends StatefulWidget {
   final String movieId;
