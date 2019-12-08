@@ -78,7 +78,7 @@ class _DetailState extends State<DetailPage> {
   // 3-1. 상세화면 - 영화 상세 데이터 받아오기2
   Future<MovieResponse> _getMovieResponse() async {
     final response = await http.get(
-        'http://52.79.87.95:3003/movie?id=${widget.movieId}');
+        'http://padakpadak.run.goorm.io/movie?id=${widget.movieId}');
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final movieResponse = MovieResponse.fromJson(jsonData);
@@ -112,7 +112,7 @@ class _DetailState extends State<DetailPage> {
   // 3-2. 상세화면 - 영화 한줄평 목록 받아오기
   Future<CommentsResponse> _getCommentsResponse() async {
     final response =
-    await http.get('http://52.79.87.95:3003/comments?movie_id=${widget.movieId}');
+    await http.get('http://padakpadak.run.goorm.io/comments?movie_id=${widget.movieId}');
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final movieResponse = CommentsResponse.fromJson(jsonData);
