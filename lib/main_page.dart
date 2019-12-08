@@ -75,7 +75,7 @@ class _MainPageState extends State<MainPage>{
     });
     // 2. 서버에 요청을 진행하여 응답 데이터를 가져옴
     final response = await http.get(
-        'http://52.79.87.95:3003/movies?order_type=$_selectedSortIndex');
+        'http://padakpadak.run.goorm.io/movies?order_type=$_selectedSortIndex');
     // 3 서버로부터 받아온 응답 데이터를 기반으로 영화 목록 데이터를 갱신
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);

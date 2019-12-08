@@ -99,7 +99,7 @@ class CommentPageState extends State<CommentPage> {
       writer: _writer,
     );
     final response = await http.post(
-        'http://52.79.87.95:3003/comment',
+        'http://padakpadak.run.goorm.io/comment',
         headers: {"Content-Type": "application/json"},
         body: json.encode(commentRequest.toMap()));
     if (response.statusCode == 200) {
