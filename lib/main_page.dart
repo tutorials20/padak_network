@@ -17,11 +17,12 @@ class MainPage extends StatefulWidget {
   }
 }
 
-class _MainPageState extends State<MainPage>{
+class _MainPageState extends State<MainPage> {
   // 2-1. 메인화면 - 서버로부터 받아올 영화 목록 데이터 변수 선언
   MoviesResponse _moviesResponse;
 
   int _selectedTabIndex = 0;
+
   // 2-1. 메인화면 - 선택한 sort 방식에 대한 변수 선언
   int _selectedSortIndex = 0;
 
@@ -40,11 +41,11 @@ class _MainPageState extends State<MainPage>{
           title: Text(_getMenuTitleBySortIndex(_selectedSortIndex)),
           leading: Icon(Icons.menu),
           actions: <Widget>[
-            // 2-4. 메인화면 - 팝업 메뉴 호출 함수화
+            // 2-4. 메인화면 - 팝업 메뉴 호출 함수화 (호출)
             _buildPopupMenuButton()
           ],
         ),
-        // 2-2. _buildPage() 로직 전면 수정
+        // 2-2. 메인화면 - _buildPage() 로직 전면 수정
         body: _buildPage(_selectedTabIndex, _moviesResponse),
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
@@ -87,7 +88,7 @@ class _MainPageState extends State<MainPage>{
     }
   }
 
-  // 2-4. 메인화면 - 팝업 메뉴 호출 함수화
+  // 2-4. 메인화면 - 팝업 메뉴 호출 함수화 (선언)
   Widget _buildPopupMenuButton() {
     return PopupMenuButton<int>(
       icon: Icon(Icons.sort),
@@ -140,20 +141,20 @@ class _MainPageState extends State<MainPage>{
 Widget _buildPage(index, moviesResponse) {
   Widget contentsWidget;
 
-  // 2-3. 메인화면 - movies가 비었을 경우에 대한 분기 처리
+  // 2-3. 메인화면 - moviesResponse 가 비었을 경우에 대한 분기 처리
   if (moviesResponse == null)
     contentsWidget = Center(child: CircularProgressIndicator());
   else
-    switch(index){
-    case 0:
-      contentsWidget = ListPage(moviesResponse.movies);
-      break;
-    case 1:
-      contentsWidget = GridPage(moviesResponse.movies);
-      break;
-    default:
-      contentsWidget = Container();
-  }
+    switch (index) {
+      case 0:
+        contentsWidget = ListPage(moviesResponse.movies);
+        break;
+      case 1:
+        contentsWidget = GridPage(moviesResponse.movies);
+        break;
+      default:
+        contentsWidget = Container();
+    }
 
   return contentsWidget;
 }
