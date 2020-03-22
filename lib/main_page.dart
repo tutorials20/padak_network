@@ -16,10 +16,11 @@ class MainPage extends StatefulWidget {
   }
 }
 
-class _MainPageState extends State<MainPage>{
+class _MainPageState extends State<MainPage> {
   // 2-1. 메인화면 - 서버로부터 받아올 영화 목록 데이터 변수 선언
 
   int _selectedTabIndex = 0;
+
   // 2-1. 메인화면 - 선택한 sort 방식에 대한 변수 선언
 
 
@@ -33,7 +34,7 @@ class _MainPageState extends State<MainPage>{
           title: Text('Movie'),
           leading: Icon(Icons.menu),
           actions: <Widget>[
-            // 2-4. 메인화면 - 팝업 메뉴 호출 함수화
+            // 2-4. 메인화면 - 팝업 메뉴 호출 함수화 (호출)
             PopupMenuButton<int>(
               icon: Icon(Icons.sort),
               onSelected: (value) {
@@ -54,7 +55,7 @@ class _MainPageState extends State<MainPage>{
             )
           ],
         ),
-        // 2-2. _buildPage() 로직 전면 수정
+        // 2-2. 메인화면 - _buildPage() 로직 전면 수정
         body: _buildPage(_selectedTabIndex),
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
@@ -79,7 +80,7 @@ class _MainPageState extends State<MainPage>{
 
   // 2-1. 메인화면 - MovieResponse 데이터 받아오기
 
-  // 2-4. 메인화면 - 팝업 메뉴 호출 함수화
+  // 2-4. 메인화면 - 팝업 메뉴 호출 함수화 (선언)
 
   // 2-4. 메인화면 - 클릭 시 실행될 로직 작성
 
