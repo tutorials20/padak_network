@@ -393,12 +393,16 @@ class _DetailState extends State<DetailPage> {
         .format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
   }
 
-  void _presentCommentPage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
+  void _presentCommentPage(BuildContext context) async {
+    final result = await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => CommentPage(
         _movieResponse.title,
         _movieResponse.id,
       ),
     ));
+
+    if (result) {
+      _requestMovie();
+    }
   }
 }
