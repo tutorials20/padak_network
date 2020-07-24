@@ -82,6 +82,9 @@ class _DetailState extends State<DetailPage> {
 
   Widget _buildContents() {
     // 3-1. 상세화면 - 영화 상세 정보 데이터가 비었을 경우에 대한 분기 처리
+    if (_movieResponse == null) {
+      return Center(child: CircularProgressIndicator());
+    }
     return SingleChildScrollView(
       padding: EdgeInsets.all(8),
       child: Column(
