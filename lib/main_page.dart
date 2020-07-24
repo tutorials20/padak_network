@@ -77,8 +77,10 @@ class _MainPageState extends State<MainPage> {
       _moviesResponse = null;
     });
 
+    var url = 'http://padakpadak.run.goorm.io/movies?order_types=$_sortIndex';
+    print('url: $url');
     final response = await http
-        .get('http://padakpadak.run.goorm.io/movies?order_types=$_sortIndex');
+        .get(url);
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final movies = MoviesResponse.fromJson(jsonData);
@@ -92,15 +94,7 @@ class _MainPageState extends State<MainPage> {
   // 2-4. 메인화면 - 팝업 메뉴 호출 함수화 (선언)
   _buildPopupMenuButton() => PopupMenuButton<int>(
         icon: Icon(Icons.sort),
-        onSelected: (value) {
-          if (value == 0) {
-            print("예매율순");
-          } else if (value == 1) {
-            print("큐레이션");
-          } else {
-            print("최신순");
-          }
-        },
+        onSelected: _onTabSortMethod,
         itemBuilder: (context) {
           return [
             PopupMenuItem(value: 0, child: Text("예매율순")),
@@ -111,7 +105,12 @@ class _MainPageState extends State<MainPage> {
       );
 
 // 2-4. 메인화면 - 클릭 시 실행될 로직 작성
-
+  _onTabSortMethod(int index) {
+    setState(() {
+      _sortIndex = index;
+    });
+    _requestMovies();
+  }
 // 2-4. 메인화면 - 각 index 에 맞는 제목을 호출해주는 로직 작성
 
 // 2-2. 메인화면 - _buildPage() 함수 내용 수정
