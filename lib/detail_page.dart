@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'comment_page.dart';
 import 'model/data/dummys_repository.dart';
 import 'model/response/comments_response.dart';
+import 'model/response/comments_response.dart';
 import 'model/response/movie_response.dart';
 import 'model/response/movie_response.dart';
 import 'model/widget/star_rating_bar.dart';
@@ -35,17 +36,12 @@ class _DetailState extends State<DetailPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // 3-2. 상세화면 - 한줄평 목록 더미 주석 처리
-    _commentsResponse = DummysRepository.loadComments(movieId);
-
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           // 3-1. 상세화면 - title 수정
           title: Text(_movieTitle),
         ),
         body: _buildContents());
-  }
 
   // 3-1. 상세화면 - initState() 작성
   @override
@@ -58,12 +54,16 @@ class _DetailState extends State<DetailPage> {
   _requestMovie() async {
     setState(() {
       _movieResponse = null;
+      _commentsResponse = null;
     });
 
     final details = await _fetchMovieDetails();
 
+    final comments = await _fetchComments();
+
     setState(() {
       _movieResponse = details;
+      _commentsResponse = comments;
       _movieTitle = details.title;
     });
   }
@@ -79,6 +79,8 @@ class _DetailState extends State<DetailPage> {
 
     return MovieResponse.fromJson(json.decode(response.body));
   }
+
+
 
   Widget _buildContents() {
     // 3-1. 상세화면 - 영화 상세 정보 데이터가 비었을 경우에 대한 분기 처리
@@ -99,6 +101,17 @@ class _DetailState extends State<DetailPage> {
   }
 
   // 3-2. 상세화면 - 영화 한줄평 목록 받아오기
+  Future<CommentsResponse> _fetchComments() async {
+    var url = 'http://padakpadak.run.goorm.io/comments?movie_id=${widget.movieId}';
+    final response = await http.get(url);
+
+    if (response.statusCode != 200) {
+      return null;
+    }
+
+    return CommentsResponse.fromJson(json.decode(response.body));
+  }
+
 
   Widget _buildMovieSummary() {
     return Column(
