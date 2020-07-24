@@ -98,9 +98,9 @@ class _MainPageState extends State<MainPage> {
         onSelected: _onTabSortMethod,
         itemBuilder: (context) {
           return [
-            PopupMenuItem(value: 0, child: Text("예매율순")),
-            PopupMenuItem(value: 1, child: Text("큐레이션")),
-            PopupMenuItem(value: 2, child: Text("최신순"))
+            PopupMenuItem(value: 0, child: Text(_getMenuTitle(0))),
+            PopupMenuItem(value: 1, child: Text(_getMenuTitle(1))),
+            PopupMenuItem(value: 2, child: Text(_getMenuTitle(2)))
           ];
         },
       );
