@@ -115,6 +115,10 @@ class _MainPageState extends State<MainPage> {
 
 // 2-2. 메인화면 - _buildPage() 함수 내용 수정
 Widget _buildPage(index, MoviesResponse moviesResponse){
+
+  if (moviesResponse == null) {
+    return Center(child: CircularProgressIndicator());
+  }
   switch(index) {
     case 0:
       return ListPage(moviesResponse.movies);
