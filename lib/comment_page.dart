@@ -6,6 +6,7 @@ import 'model/response/comments_response.dart';
 import 'model/widget/star_rating_bar.dart';
 
 // 4-1. 한줄평 입력 - 라이브러리 임포트
+import 'package:http/http.dart' as http;
 
 class CommentPage extends StatefulWidget {
   final String movieTitle;
@@ -26,7 +27,7 @@ class CommentPageState extends State<CommentPage> {
   String _writer = "";
   String _contents = "";
 
-  CommentPageState(String movieTitle, String movieId){
+  CommentPageState(String movieTitle, String movieId) {
     this.movieTitle = movieTitle;
     this.movieId = movieId;
   }
@@ -44,19 +45,18 @@ class CommentPageState extends State<CommentPage> {
       body: WillPopScope(
         child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildMovieTitle(),
-                  _buildUserRating(),
-                  _buildHorizontalDivider(),
-                  _buildNickNameInputForm(),
-                  _buildCommentInputForm()
-                ],
-              ),
-            )
-        ),
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildMovieTitle(),
+              _buildUserRating(),
+              _buildHorizontalDivider(),
+              _buildNickNameInputForm(),
+              _buildCommentInputForm()
+            ],
+          ),
+        )),
         onWillPop: () {
           Navigator.of(context).pop(false);
           return Future.value(false);
@@ -65,8 +65,7 @@ class CommentPageState extends State<CommentPage> {
     );
   }
 
-
-  Widget _buildSubmitButton(){
+  Widget _buildSubmitButton() {
     final sendIcon = Icon(
       Icons.send,
       color: Colors.white,
@@ -80,15 +79,41 @@ class CommentPageState extends State<CommentPage> {
           _showSnackBar('모든 정보를 입력해주세요.');
         } else {
           // 4-1. 한줄평 입력 - 서버 통신 로직 진행
-          Navigator.of(context).pop(true);
+//          Navigator.of(context).pop(true);
+          _postComment();
         }
       },
     );
   }
 
   // 4-1. 한줄평 입력 - Post 요청 코드 작성
+  _postComment() async {
+    final currentTime =
+        DateTime.now().millisecondsSinceEpoch.toDouble() ~/ 1000;
+    final request = Comment(
+      rating: _rating,
+      movieId: widget.movieId,
+      timestamp: currentTime,
+      contents: _contents,
+      writer: _writer,
+    );
 
-  Widget _buildMovieTitle(){
+    final url = 'http://padakpadak.run.goorm.io/comment';
+    final response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(request.toMap()));
+
+    print('$url response is \n${json.decode(response.body)}');
+
+    if (response.statusCode != 200) {
+      _showSnackBar('잠시 후 다시 시도해라');
+      return;
+    }
+
+    Navigator.of(context).pop(true);
+  }
+
+  Widget _buildMovieTitle() {
     return Container(
       padding: EdgeInsets.all(10),
       child: Text(
@@ -98,7 +123,7 @@ class CommentPageState extends State<CommentPage> {
     );
   }
 
-  Widget _buildUserRating(){
+  Widget _buildUserRating() {
     return Column(
       children: <Widget>[
         StarRatingBar(
@@ -113,7 +138,7 @@ class CommentPageState extends State<CommentPage> {
     );
   }
 
-  Widget _buildHorizontalDivider(){
+  Widget _buildHorizontalDivider() {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 14, horizontal: 4),
       width: double.infinity,
@@ -122,7 +147,7 @@ class CommentPageState extends State<CommentPage> {
     );
   }
 
-  Widget _buildNickNameInputForm(){
+  Widget _buildNickNameInputForm() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: TextField(
@@ -141,7 +166,7 @@ class CommentPageState extends State<CommentPage> {
     );
   }
 
-  Widget _buildCommentInputForm(){
+  Widget _buildCommentInputForm() {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
       child: TextField(
