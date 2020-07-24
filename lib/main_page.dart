@@ -45,24 +45,7 @@ class _MainPageState extends State<MainPage> {
           leading: Icon(Icons.menu),
           actions: <Widget>[
             // 2-4. 메인화면 - 팝업 메뉴 호출 함수화 (호출)
-            PopupMenuButton<int>(
-              icon: Icon(Icons.sort),
-              onSelected: (value) {
-                if (value == 0)
-                  print("예매율순");
-                else if (value == 1)
-                  print("큐레이션");
-                else
-                  print("최신순");
-              },
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(value: 0, child: Text("예매율순")),
-                  PopupMenuItem(value: 1, child: Text("큐레이션")),
-                  PopupMenuItem(value: 2, child: Text("최신순"))
-                ];
-              },
-            )
+            _buildPopupMenuButton()
           ],
         ),
         // 2-2. 메인화면 - _buildPage() 로직 전면 수정
@@ -94,7 +77,8 @@ class _MainPageState extends State<MainPage> {
       _moviesResponse = null;
     });
 
-    final response = await http.get('http://padakpadak.run.goorm.io/movies?order_types=$_sortIndex');
+    final response = await http
+        .get('http://padakpadak.run.goorm.io/movies?order_types=$_sortIndex');
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final movies = MoviesResponse.fromJson(jsonData);
@@ -106,25 +90,42 @@ class _MainPageState extends State<MainPage> {
   }
 
   // 2-4. 메인화면 - 팝업 메뉴 호출 함수화 (선언)
+  _buildPopupMenuButton() => PopupMenuButton<int>(
+        icon: Icon(Icons.sort),
+        onSelected: (value) {
+          if (value == 0) {
+            print("예매율순");
+          } else if (value == 1) {
+            print("큐레이션");
+          } else {
+            print("최신순");
+          }
+        },
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem(value: 0, child: Text("예매율순")),
+            PopupMenuItem(value: 1, child: Text("큐레이션")),
+            PopupMenuItem(value: 2, child: Text("최신순"))
+          ];
+        },
+      );
 
-  // 2-4. 메인화면 - 클릭 시 실행될 로직 작성
+// 2-4. 메인화면 - 클릭 시 실행될 로직 작성
 
-  // 2-4. 메인화면 - 각 index 에 맞는 제목을 호출해주는 로직 작성
-
-}
+// 2-4. 메인화면 - 각 index 에 맞는 제목을 호출해주는 로직 작성
 
 // 2-2. 메인화면 - _buildPage() 함수 내용 수정
-Widget _buildPage(index, MoviesResponse moviesResponse){
-
-  if (moviesResponse == null) {
-    return Center(child: CircularProgressIndicator());
-  }
-  switch(index) {
-    case 0:
-      return ListPage(moviesResponse.movies);
-    case 1:
-      return  GridPage(moviesResponse.movies);
-    default:
-      return  Container();
+  _buildPage(index, MoviesResponse moviesResponse) {
+    if (moviesResponse == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+    switch (index) {
+      case 0:
+        return ListPage(moviesResponse.movies);
+      case 1:
+        return GridPage(moviesResponse.movies);
+      default:
+        return Container();
+    }
   }
 }
