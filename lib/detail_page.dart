@@ -42,7 +42,7 @@ class _DetailState extends State<DetailPage> {
     return Scaffold(
         appBar: AppBar(
           // 3-1. 상세화면 - title 수정
-          title: Text(_movieResponse.title),
+          title: Text(_movieTitle),
         ),
         body: _buildContents());
   }
